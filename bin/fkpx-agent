@@ -1,0 +1,34 @@
+#! perl
+# ABSTRACT: File::KeePassX::Agent program
+# PODNAME: fkpx-agent
+
+=head1 SYNOPSIS
+
+    fkpx-agent
+
+    fkpx-agent FILEPATH [--pass=PASSWORD] [--keyfile=FILEPATH]
+
+=head1 DESCRIPTION
+
+This is a drop-in replacement for L<fkp-agent> that uses the newer L<File::KDBX> backend to add provide
+support for loading newer KDBX4 files.
+
+=cut
+
+use warnings;
+use strict;
+
+use File::KeePassX::Agent;
+
+our $VERSION = '999.999'; # VERSION
+
+if (@ARGV && $ARGV[0] =~ /^--?h(?:elp)?$/) {
+    if (eval { require Pod::Usage }) {
+        Pod::Usage::pod2usage();
+    }
+    else {
+        print "Usage: $0 FILEPATH [--pass=PASSWORD] [--keyfile=FILEPATH]\n";
+    }
+}
+
+File::KeePassX::Agent::run();
