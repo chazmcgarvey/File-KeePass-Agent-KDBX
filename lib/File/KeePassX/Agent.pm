@@ -13,9 +13,6 @@ use parent 'File::KeePass::Agent';
 our $VERSION = '999.999'; # VERSION
 
 our $KEEPASS_CLASS;
-BEGIN {
-    $KEEPASS_CLASS = $ENV{PERL_FILE_KEEPASS_CLASS} || 'File::KeePassX';
-}
 
 sub new {
     my $class = shift;
@@ -30,11 +27,14 @@ sub run { __PACKAGE__->new->SUPER::run(@_) }
     $k = File::KeePassX::Agent->keepass_class;
     $k = $agent->keepass_class;
 
-Get the backend L<File::KeePass> (or compatible) instance.
+Get the backend L<File::KeePass> (or compatible) package name.
 
 =cut
 
-sub keepass_class { (ref $_[0] eq 'HASH') && $_[0]->{keepass_class} || $KEEPASS_CLASS }
+sub keepass_class {
+    (ref $_[0] eq 'HASH') && $_[0]->{keepass_class}
+        || $KEEPASS_CLASS || $ENV{PERL_FILE_KEEPASS_CLASS} || 'File::KeePassX';
+}
 
 sub load_keepass {
     my $self = shift;
@@ -60,28 +60,31 @@ See L<File::KeePass::Agent> for a more complete synopsis.
 =head1 DESCRIPTION
 
 This is a thin subclass of L<File::KeePass::Agent> that uses the newer L<File::KDBX> parser. It is meant to be
-a drop-in replacement.
+a drop-in replacement. This module really doesn't do anything except provide a way to load a backend other
+than L<File::KeePass>. You could accomplish the same thing with B<File::KeePass::Agent> directly in a hackier
+way:
 
-L<File::KeePass::Agent> is a suggested dependency of this distribution, but it is absolutely required for this
-module to work at all. So be sure to list that separately as a dependency of your app or script if you need
-it.
+    use File::KeePass::Agent;
+    use File::KeePassX;
 
-This module also provides support for setting the backend L<File::KeePass> class explicitly. You can do that
-one of three ways, in decreasing precedence:
+    no warnings 'redefine';
+    *File::KeePass::Agent::keepass_class = sub { 'File::KeePassX' };
 
-Pass as an argument:
+Perhaps in the future B<File::KeePass::Agent> will support this without monkey-patching. Until then, this
+module allows setting the backend B<File::KeePass> class in three ways (in decreasing precedence):
 
-    File::KeePassX::Agent->new(keepass_class => 'MyKeePass')->run;
+Pass as an attribute to the constructor:
+
+    File::KeePassX::Agent->new(keepass_class => 'My::KeePass')->run;
 
 as a package variable:
 
-    File::KeePassX::Agent::KEEPASS_CLASS = 'MyKeePass';
+    $File::KeePassX::Agent::KEEPASS_CLASS = 'My::KeePass';
     File::KeePassX::Agent->new->run;
 
-or from the environment (must be set sometime before loading the module):
+or from the environment:
 
-    BEGIN { $ENV{PERL_FILE_KEEPASS_CLASS} = 'MyKeePass' }
-    use File::KeePassX::Agent;
+    $ENV{PERL_FILE_KEEPASS_CLASS} = 'My::KeePass';
     File::KeePassX::Agent->new->run;
 
 =head1 ENVIRONMENT
