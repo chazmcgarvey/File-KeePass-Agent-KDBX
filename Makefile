@@ -4,6 +4,7 @@
 CPANM   = cpanm
 COVER   = cover
 DZIL    = dzil
+PERL    = perl
 PROVE   = prove
 
 cpanm_env = AUTHOR_TESTING=0 RELEASE_TESTING=0
@@ -17,7 +18,6 @@ bootstrap:
 
 clean:
 	$(DZIL) $@
-	$(RM) -r .smoke
 
 cover:
 	$(COVER) -test
@@ -25,7 +25,13 @@ cover:
 dist:
 	$(DZIL) build
 
+distclean: clean
+	$(RM) -r cover_db
+
+run:
+	$(PERL) -Ilib bin/fkpx-agent t/files/Format300.kdbx
+
 test:
 	$(PROVE) -l $(if $(V),-vj1)
 
-.PHONY: all bootstrap clean cover dist test
+.PHONY: all bootstrap clean cover dist distclean run test
