@@ -1,5 +1,5 @@
 #! perl
-# ABSTRACT: File::KeePassX::Agent program
+# ABSTRACT: File::KeePass::Agent::KDBX program
 # PODNAME: fkpx-agent
 
 =head1 SYNOPSIS
@@ -18,7 +18,7 @@ support for loading newer KDBX4 files.
 use warnings;
 use strict;
 
-use File::KeePassX::Agent;
+use File::KeePass::Agent::KDBX;
 
 our $VERSION = '999.999'; # VERSION
 
@@ -31,4 +31,4 @@ if (@ARGV && $ARGV[0] =~ /^--?h(?:elp)?$/) {
     }
 }
 
-File::KeePassX::Agent::run();
+File::KeePass::Agent::KDBX::run();

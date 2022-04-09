@@ -5,7 +5,7 @@
 *~
 /.build
 /.perl-version
-/File-KeePassX-Agent-*
+/File-KeePass-Agent-KDBX-*
 /MYMETA.*
 /blib
 /cover_db

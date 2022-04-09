@@ -1,4 +1,4 @@
-package File::KeePassX::Agent;
+package File::KeePass::Agent::KDBX;
 # ABSTRACT: A KeePass 2 agent
 
 use utf8;
@@ -24,7 +24,7 @@ sub run { __PACKAGE__->new->SUPER::run(@_) }
 
 =attr keepass_class
 
-    $k = File::KeePassX::Agent->keepass_class;
+    $k = File::KeePass::Agent::KDBX->keepass_class;
     $k = $agent->keepass_class;
 
 Get the backend L<File::KeePass> (or compatible) package name.
@@ -33,7 +33,7 @@ Get the backend L<File::KeePass> (or compatible) package name.
 
 sub keepass_class {
     (ref $_[0] eq 'HASH') && $_[0]->{keepass_class}
-        || $KEEPASS_CLASS || $ENV{PERL_FILE_KEEPASS_CLASS} || 'File::KeePassX';
+        || $KEEPASS_CLASS || $ENV{PERL_FILE_KEEPASS_CLASS} || 'File::KeePass::KDBX';
 }
 
 sub load_keepass {
@@ -49,11 +49,11 @@ __END__
 
 =head1 SYNOPSIS
 
-    use File::KeePassX::Agent;
+    use File::KeePass::Agent::KDBX;
 
-    File::KeePassX::Agent->new(%attributes)->run;
+    File::KeePass::Agent::KDBX->new(%attributes)->run;
     # OR
-    File::KeePassX::Agent->new(%attributes)->run($filepath, $password);
+    File::KeePass::Agent::KDBX->new(%attributes)->run($filepath, $password);
 
 See L<File::KeePass::Agent> for a more complete synopsis.
 
@@ -65,31 +65,31 @@ than L<File::KeePass>. You could accomplish the same thing with B<File::KeePass:
 way:
 
     use File::KeePass::Agent;
-    use File::KeePassX;
+    use File::KeePass::KDBX;
 
     no warnings 'redefine';
-    *File::KeePass::Agent::keepass_class = sub { 'File::KeePassX' };
+    *File::KeePass::Agent::keepass_class = sub { 'File::KeePass::KDBX' };
 
 Perhaps in the future B<File::KeePass::Agent> will support this without monkey-patching. Until then, this
 module allows setting the backend B<File::KeePass> class in three ways (in decreasing precedence):
 
 Pass as an attribute to the constructor:
 
-    File::KeePassX::Agent->new(keepass_class => 'My::KeePass')->run;
+    File::KeePass::Agent::KDBX->new(keepass_class => 'My::KeePass')->run;
 
 as a package variable:
 
-    $File::KeePassX::Agent::KEEPASS_CLASS = 'My::KeePass';
-    File::KeePassX::Agent->new->run;
+    $File::KeePass::Agent::KDBX::KEEPASS_CLASS = 'My::KeePass';
+    File::KeePass::Agent::KDBX->new->run;
 
 or from the environment:
 
     $ENV{PERL_FILE_KEEPASS_CLASS} = 'My::KeePass';
-    File::KeePassX::Agent->new->run;
+    File::KeePass::Agent::KDBX->new->run;
 
 =head1 ENVIRONMENT
 
 =for :list
-* C<PERL_FILE_KEEPASS_CLASS> - Name of the backend class (default: C<File::KeePassX>)
+* C<PERL_FILE_KEEPASS_CLASS> - Name of the backend class (default: C<File::KeePass::KDBX>)
 
 =cut
