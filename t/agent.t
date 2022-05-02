@@ -3,10 +3,14 @@
 use warnings;
 use strict;
 
-use File::KeePass::Agent::KDBX;
 use File::Spec;
 use FindBin qw($Bin);
 use Test::More;
+
+my $os = lc $^O;
+plan skip_all => 'OS not supported' if $os ne 'unix' && $os ne 'linux';
+
+require File::KeePass::Agent::KDBX;
 
 my $class = File::KeePass::Agent::KDBX->keepass_class;
 is $class, 'File::KeePass::KDBX', 'Get class from keepass_class method';
