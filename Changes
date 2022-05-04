@@ -2,6 +2,8 @@ Revision history for File-KeePass-Agent-KDBX.
 
 {{$NEXT}}
 
+0.902     2022-05-04 13:28:32-0600
+
   * Skips the compile test on unsupported systems since that also fails.
     No other changes.
 

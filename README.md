@@ -4,7 +4,7 @@ File::KeePass::Agent::KDBX - A KeePass 2 agent
 
 # VERSION
 
-version 0.901
+version 0.902
 
 # SYNOPSIS
 
